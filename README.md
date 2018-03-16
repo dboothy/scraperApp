@@ -9,6 +9,6 @@ scraperApp retrieves data from a chosen online publication to be served to a cli
 1) Create a repository in github and clone to your computer.
 2) On the commandline, within the directory, run " $ express"
 
-[!] 
+[!] (screenshot1.png)
 
 3) install express-handlebars and mongoose
