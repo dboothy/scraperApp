@@ -1,14 +1,26 @@
 # scraperApp
 
-Introduction:
+bring up the page, app automatically scrapes for new articles and loads them
 
-scraperApp retrieves data from a chosen online publication to be served to a client as news clips with clickable links taking the user back to the full article.
+need 
 
-## Installation
+headline
+summary
+url
+comments
 
-1) Create a repository in github and clone to your computer.
-2) On the commandline, within the directory, run " $ express"
 
-[!] 
+users should be able to leave comments on the articles and be able to visit them later
 
-3) install express-handlebars and mongoose
+needs to track articles, comments - Models
+
+article will contain array of comments
+
+**stretch goal** let users sign in and leave comments otherwise just be able to view content
+
+
+
+
+
+
+

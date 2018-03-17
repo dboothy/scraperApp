@@ -5,11 +5,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var cheerio = require("cheerio");
+var request = require("request");
 var index = require('./routes/index');
-
-
 var app = express();
+var db = require("./db/models");
+
+console.log("\n***********************************\n" +
+            "Grabbing every article heading and link\n" +
+            "from Gamespot's front page" +
+            "\n***********************************\n");
+
 
 // view engine setup
 
@@ -25,6 +31,40 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+
+
+app.get('/scrape', function(){
+	request("https://www.gamespot.com/", function(error, response, html) {
+		var $ = cheerio.load(html);
+
+		var results = [];
+		console.log(results)
+
+		$(".media").each(function(i, element) {
+			var headline = $(element).find("h3").text()
+			var body = $(element).find("p").text()
+			var link = $(element).find("a").attr("href");
+			// var photo = $(element).find("img").html()
+			results.push({
+			    headline: headline,
+			    body: body,
+			    link: link
+			    // photo: photo
+		    });
+	  	
+
+		for(var i= 0; i < results.length; i++){
+		    
+		    var head = results[i].headline
+		    var body = results[i].body
+		    var link = results[i].link
+		    // var photo = results[i].photo
+		    console.log("\nTitle: "+head, "\nBody: "+body, "\nLink: " + link )
+		}
+	});
+    
+	});
+})
 
 
 // catch 404 and forward to error handler

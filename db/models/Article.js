@@ -1,17 +1,20 @@
 var mongoose = require("mongoose")
-var db = require("./index")
-var Comment = require("./Comment")
 
+var Schema = mongoose.Schema;
 
-var ArticleeSchema = new mongoose.Schema({
+var ArticleSchema = new Schema({
 	
 	headline: {type: String, required: true},
 	summary: {type: String, required: true},
 	url: {type: String, required: true},
-	comments: [Comment.Schema]
+	saved: {type: Boolean, default: false},
+	comments: {
+		type: Schema.Types.ObjectId,
+		ref: "Comment"
+	}
 })
 
-var Article = db.model("Article", CommentSchema)
+var Article = mongoose.model("Article", ArticleSchema)
 
-module.exports = Comment;
+module.exports = Article;
 
