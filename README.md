@@ -23,4 +23,8 @@ article will contain array of comments
 
 
 
+<<<<<<< HEAD
+=======
+![Alt text](images/screenshot1.png)
+>>>>>>> 7c165c909d8fda7ee4b46c1978903cdae6fe154a
 

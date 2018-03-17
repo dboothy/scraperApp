@@ -34,36 +34,38 @@ app.use('/', index);
 
 
 app.get('/scrape', function(){
-	request("https://www.gamespot.com/", function(error, response, html) {
-		var $ = cheerio.load(html);
 
-		var results = [];
-		console.log(results)
+	
+	// request("https://www.gamespot.com/", function(error, response, html) {
+	// 	var $ = cheerio.load(html);
 
-		$(".media").each(function(i, element) {
-			var headline = $(element).find("h3").text()
-			var body = $(element).find("p").text()
-			var link = $(element).find("a").attr("href");
-			// var photo = $(element).find("img").html()
-			results.push({
-			    headline: headline,
-			    body: body,
-			    link: link
-			    // photo: photo
-		    });
+	// 	var results = [];
+	// 	console.log(results)
+
+	// 	$(".media").each(function(i, element) {
+	// 		var headline = $(element).find("h3").text()
+	// 		var body = $(element).find("p").text()
+	// 		var link = $(element).find("a").attr("href");
+	// 		// var photo = $(element).find("img").html()
+	// 		results.push({
+	// 		    headline: headline,
+	// 		    body: body,
+	// 		    link: link
+	// 		    // photo: photo
+	// 	    });
 	  	
 
-		for(var i= 0; i < results.length; i++){
+	// 	for(var i= 0; i < results.length; i++){
 		    
-		    var head = results[i].headline
-		    var body = results[i].body
-		    var link = results[i].link
-		    // var photo = results[i].photo
-		    console.log("\nTitle: "+head, "\nBody: "+body, "\nLink: " + link )
-		}
-	});
+	// 	    var head = results[i].headline
+	// 	    var body = results[i].body
+	// 	    var link = results[i].link
+	// 	    // var photo = results[i].photo
+	// 	    console.log("\nTitle: "+head, "\nBody: "+body, "\nLink: " + link )
+	// 	}
+	// });
     
-	});
+	// });
 })
 
 
