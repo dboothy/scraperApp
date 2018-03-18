@@ -10,6 +10,8 @@ var request = require("request");
 var index = require('./routes/index');
 var app = express();
 var db = require("./db/models");
+var axios = require("axios");
+var mongoose = require("./db")
 
 console.log("\n***********************************\n" +
             "Grabbing every article heading and link\n" +
@@ -33,7 +35,42 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 
 
-app.get('/scrape', function(){
+app.get('/scrape', function(req, res) {axios.get("https://www.gamespot.com/").then(function(response) {
+    // Then, we load that into cheerio and save it to $ for a shorthand selector
+    var $ = cheerio.load(response.data);
+
+    // Now, we grab every h2 within an article tag, and do the following:
+    $("article.media").each(function(i, element) {
+      // Save an empty result object
+      var result = {};
+
+      // Add the text and href of every link, and save them as properties of the result object
+      result.headline = $(this)
+        .find("h3").text()
+      result.summary = $(this)
+        .find("p.media-deck").text()
+      result.url = "https://www.gamespot.com/" + $(this)
+        .find("a").attr("href");
+        // console.log(result.title+"\n","https://www.gamespot.com/"+result.link+"\n")
+      // Create a new Article using the `result` object built from scraping
+      db.Article
+
+
+        .create(result)
+      
+        .then(function() {
+          // If we were able to successfully scrape and save an Article, send a message to the client
+          res.send("Scrape Complete");
+        })
+        .catch(function(err) {
+          // If an error occurred, send it to the client
+          res.send("There was an error")
+          return
+        });
+    });
+  });
+});
+
 
 	
 	// request("https://www.gamespot.com/", function(error, response, html) {
@@ -46,7 +83,7 @@ app.get('/scrape', function(){
 	// 		var headline = $(element).find("h3").text()
 	// 		var body = $(element).find("p").text()
 	// 		var link = $(element).find("a").attr("href");
-	// 		// var photo = $(element).find("img").html()
+			  // var photo = $(element).find("img").html()
 	// 		results.push({
 	// 		    headline: headline,
 	// 		    body: body,
@@ -61,12 +98,12 @@ app.get('/scrape', function(){
 	// 	    var body = results[i].body
 	// 	    var link = results[i].link
 	// 	    // var photo = results[i].photo
-	// 	    console.log("\nTitle: "+head, "\nBody: "+body, "\nLink: " + link )
+	// 	    console.log("\nTitle: "+head, "\nBody: "+body, "\nLink: www.gamespot.com" + link )
 	// 	}
 	// });
     
 	// });
-})
+
 
 
 // catch 404 and forward to error handler

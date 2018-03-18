@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
- 
-mongoose.connect('mongodb://localhost/scraperdb');
+
+mongoose.Promise = Promise;
+mongoose.connect('mongodb://localhost/scraperdb', {
+
+});
 
 var db = mongoose.connection
 
@@ -17,4 +20,4 @@ db.once("open", function(){
 
 
 
-module.exports = db
+module.exports = mongoose
