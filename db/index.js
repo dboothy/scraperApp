@@ -1,9 +1,7 @@
 var mongoose = require('mongoose');
 
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost/scraperdb', {
-
-});
+mongoose.connect('mongodb://localhost/scraperdb')
 
 var db = mongoose.connection
 

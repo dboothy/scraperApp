@@ -1,5 +1,6 @@
 var exphbs  = require('express-handlebars');
 var express = require('express');
+var app = express();
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -8,10 +9,9 @@ var bodyParser = require('body-parser');
 var cheerio = require("cheerio");
 var request = require("request");
 var index = require('./routes/index');
-var app = express();
 var db = require("./db/models");
 var axios = require("axios");
-var mongoose = require("./db")
+var mongoose = require("./db");
 
 console.log("\n***********************************\n" +
             "Grabbing every article heading and link\n" +
@@ -35,9 +35,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 
 
-app.get('/scrape', function(req, res) {axios.get("https://www.gamespot.com/").then(function(response) {
+app.get('/scrape', function(req, res) {
+
+  request.get("https://www.gamespot.com/", function(error, response, html) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
-    var $ = cheerio.load(response.data);
+    var $ = cheerio.load(html);
 
     // Now, we grab every h2 within an article tag, and do the following:
     $("article.media").each(function(i, element) {
@@ -53,56 +55,80 @@ app.get('/scrape', function(req, res) {axios.get("https://www.gamespot.com/").th
         .find("a").attr("href");
         // console.log(result.title+"\n","https://www.gamespot.com/"+result.link+"\n")
       // Create a new Article using the `result` object built from scraping
-      db.Article
+      var entry = new db.Article(result);
+      entry.save(function(err, doc){
+          if (err) {
+            console.log(err)
+          }
+
+          else {
+            console.log(doc)
+          }
 
 
-        .create(result)
+      })
+        // .create(result)
       
-        .then(function() {
-          // If we were able to successfully scrape and save an Article, send a message to the client
-          res.send("Scrape Complete");
-        })
-        .catch(function(err) {
-          // If an error occurred, send it to the client
-          res.send("There was an error")
-          return
-        });
+        // .then(function() {
+        // //   // If we were able to successfully scrape and save an Article, send a message to the client
+        //   res.send("Scrape Complete");
+        // })
+        // .catch(function(err) {
+        //   // If an error occurred, send it to the client
+        //   res.send("There was an error")
+        // });
     });
   });
 });
 
+app.get("/articles", function(req, res) {
+  // Grab every document in the Articles collection
+  db.Article
+    .find({})
+    .then(function(dbArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
 
 	
-	// request("https://www.gamespot.com/", function(error, response, html) {
-	// 	var $ = cheerio.load(html);
+// 	request("https://www.gamespot.com/", function(error, response, html) {
+// 		var $ = cheerio.load(html);
 
-	// 	var results = [];
-	// 	console.log(results)
+// 		// var results = [];
+// 		// console.log(results)
 
-	// 	$(".media").each(function(i, element) {
-	// 		var headline = $(element).find("h3").text()
-	// 		var body = $(element).find("p").text()
-	// 		var link = $(element).find("a").attr("href");
-			  // var photo = $(element).find("img").html()
-	// 		results.push({
-	// 		    headline: headline,
-	// 		    body: body,
-	// 		    link: link
-	// 		    // photo: photo
-	// 	    });
+// 		$(".media").each(function(i, element) {
+// 			var headline = $(element).find("h3").text()
+// 			var body = $(element).find("p").text()
+// 			var link = $(element).find("a").attr("href");
+// 			  // var photo = $(element).find("img").html()
+// 			// results.push({
+// 			//     headline: headline,
+// 			//     body: body,
+// 			//     link: link
+// 			//     // photo: photo
+// 		 //    });
 	  	
-
-	// 	for(var i= 0; i < results.length; i++){
+// console.log(body)
+// console.log(headline)
+// 		// for(var i= 0; i < results.length; i++){
 		    
-	// 	    var head = results[i].headline
-	// 	    var body = results[i].body
-	// 	    var link = results[i].link
-	// 	    // var photo = results[i].photo
-	// 	    console.log("\nTitle: "+head, "\nBody: "+body, "\nLink: www.gamespot.com" + link )
-	// 	}
-	// });
+// 		//     var head = results[i].headline
+// 		//     var body = results[i].body
+// 		//     var link = results[i].link
+// 		//     // var photo = results[i].photo
+// 		    // console.log("\nTitle: "+headline, "\nBody: "+body, "\nLink: www.gamespot.com" + link )
+// 		// }
+
+//     // console.log(results)
+// 	});
     
-	// });
+// 	});
 
 
 
