@@ -23,17 +23,21 @@ console.log("\n***********************************\n" +
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
-
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+app.use("/", index);
 
+app.get("/", function(req, res) {
+
+ res.send("index");
+
+});
 
 app.get('/scrape', function(req, res) {
 
@@ -96,36 +100,36 @@ app.get("/articles", function(req, res) {
 });
 
 	
-// 	request("https://www.gamespot.com/", function(error, response, html) {
+// 	request("https://techcrunch.com/", function(error, response, html) {
 // 		var $ = cheerio.load(html);
 
-// 		// var results = [];
-// 		// console.log(results)
+// 		var results = [];
+// 		console.log(results)
 
-// 		$(".media").each(function(i, element) {
-// 			var headline = $(element).find("h3").text()
-// 			var body = $(element).find("p").text()
+// 		$("div.post-block").each(function(i, element) {
+// 			var headline = $(element).find("h2").text()
+// 			var body = $(element).find("div.post-block__content").text()
 // 			var link = $(element).find("a").attr("href");
 // 			  // var photo = $(element).find("img").html()
-// 			// results.push({
-// 			//     headline: headline,
-// 			//     body: body,
-// 			//     link: link
+// 			results.push({
+// 			    headline: headline,
+// 			    body: body,
+// 			    link: link
 // 			//     // photo: photo
-// 		 //    });
+// 		    });
 	  	
-// console.log(body)
-// console.log(headline)
+// // console.log(body)
+// // console.log(headline)
 // 		// for(var i= 0; i < results.length; i++){
 		    
 // 		//     var head = results[i].headline
 // 		//     var body = results[i].body
 // 		//     var link = results[i].link
 // 		//     // var photo = results[i].photo
-// 		    // console.log("\nTitle: "+headline, "\nBody: "+body, "\nLink: www.gamespot.com" + link )
+// 		//     console.log("\nTitle: "+headline, "\nBody: "+body, "\nLink: https://techcrunch.com/" + link )
 // 		// }
 
-//     // console.log(results)
+//     console.log(results)
 // 	});
     
 // 	});
