@@ -2,15 +2,28 @@
 
 $.getJSON("/articles", function(data) {
 
+  // $(".article-container").empty()
+
   for (var i = 0; i < data.length; i++) {
     
-    $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].headline + "<br/>" + data[i].summary + "<br/>" + data[i].url + "</p>");
+    var articleTitle = $("<h2>");
+    articleTitle.text(data[i].headline)
+    var articleLink = $("<a href= >");
+    articleLink.addClass("aLink");
+    articleLink.text(data[i].url)
+    var articleSummary = $("<p>");
+    articleSummary.addClass("aBody");
+    articleSummary.text(data[i].summary)
+    $("#aBody").append(articleTitle, "<p data-id='" + data[i]._id + "'>",articleSummary, articleLink)
+
+    
+    // $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].headline + "<br/>" + data[i].summary + "<br/>" + data[i].url + "</p>");
   }
 });
 
 
 
-
+ // $(document).on("click", ".scrape-new", handleArticleScrape);
 
 
 
@@ -25,8 +38,8 @@ $.getJSON("/articles", function(data) {
 //   // Adding event listeners to any dynamically generated "save article"
 //   // and "scrape new article" buttons
 //   var articleContainer = $(".article-container");
-//   $(document).on("click", ".btn.save", handleArticleSave);
-//   $(document).on("click", ".scrape-new", handleArticleScrape);
+//   // $(document).on("click", ".btn.save", handleArticleSave);
+  // $(document).on("click", ".scrape-new", handleArticleScrape);
 
 //   // Once the page is ready, run the initPage function to kick things off
 //   initPage();
@@ -61,7 +74,7 @@ $.getJSON("/articles", function(data) {
 //   }
 
 //   function createPanel(article) {
-//     // This functiont takes in a single JSON object for an article/headline
+//     // This function takes in a single JSON object for an article/headline
 //     // It constructs a jQuery element containing all of the formatted HTML for the
 //     // article panel
 //     var panel = $(
@@ -90,58 +103,60 @@ $.getJSON("/articles", function(data) {
 //     return panel;
 //   }
 
-//   function renderEmpty() {
-//     // This function renders some HTML to the page explaining we don't have any articles to view
-//     // Using a joined array of HTML string data because it's easier to read/change than a concatenated string
-//     var emptyAlert = $(
-//       [
-//         "<div class='alert alert-warning text-center'>",
-//         "<h4>Uh Oh. Looks like we don't have any new articles.</h4>",
-//         "</div>",
-//         "<div class='panel panel-default'>",
-//         "<div class='panel-heading text-center'>",
-//         "<h3>What Would You Like To Do?</h3>",
-//         "</div>",
-//         "<div class='panel-body text-center'>",
-//         "<h4><a class='scrape-new'>Try Scraping New Articles</a></h4>",
-//         "<h4><a href='/saved'>Go to Saved Articles</a></h4>",
-//         "</div>",
-//         "</div>"
-//       ].join("")
-//     );
-//     // Appending this data to the page
-//     articleContainer.append(emptyAlert);
-//   }
+//   // function renderEmpty() {
+//   //   // This function renders some HTML to the page explaining we don't have any articles to view
+//   //   // Using a joined array of HTML string data because it's easier to read/change than a concatenated string
+//   //   var emptyAlert = $(
+//   //     [
+//   //       "<div class='alert alert-warning text-center'>",
+//   //       "<h4>Uh Oh. Looks like we don't have any new articles.</h4>",
+//   //       "</div>",
+//   //       "<div class='panel panel-default'>",
+//   //       "<div class='panel-heading text-center'>",
+//   //       "<h3>What Would You Like To Do?</h3>",
+//   //       "</div>",
+//   //       "<div class='panel-body text-center'>",
+//   //       "<h4><a class='scrape-new'>Try Scraping New Articles</a></h4>",
+//   //       "<h4><a href='/saved'>Go to Saved Articles</a></h4>",
+//   //       "</div>",
+//   //       "</div>"
+//   //     ].join("")
+//   //   );
+//   //   // Appending this data to the page
+//   //   articleContainer.append(emptyAlert);
+//   // }
 
-//   function handleArticleSave() {
-//     // This function is triggered when the user wants to save an article
-//     // When we rendered the article initially, we attatched a javascript object containing the headline id
-//     // to the element using the .data method. Here we retrieve that.
-//     var articleToSave = $(this).parents(".panel").data();
-//     articleToSave.saved = true;
-//     // Using a patch method to be semantic since this is an update to an existing record in our collection
-//     $.ajax({
-//       method: "PUT",
-//       url: "/api/headlines",
-//       data: articleToSave
-//     }).then(function(data) {
-//       // If successful, mongoose will send back an object containing a key of "ok" with the value of 1
-//       // (which casts to 'true')
-//       if (data.ok) {
-//         // Run the initPage function again. This will reload the entire list of articles
-//         initPage();
-//       }
-//     });
-//   }
+//   // function handleArticleSave() {
+//   //   // This function is triggered when the user wants to save an article
+//   //   // When we rendered the article initially, we attatched a javascript object containing the headline id
+//   //   // to the element using the .data method. Here we retrieve that.
+//   //   var articleToSave = $(this).parents(".panel").data();
+//   //   articleToSave.saved = true;
+//   //   // Using a patch method to be semantic since this is an update to an existing record in our collection
+//   //   $.ajax({
+//   //     method: "PUT",
+//   //     url: "/api/headlines",
+//   //     data: articleToSave
+//   //   }).then(function(data) {
+//   //     // If successful, mongoose will send back an object containing a key of "ok" with the value of 1
+//   //     // (which casts to 'true')
+//   //     if (data.ok) {
+//   //       // Run the initPage function again. This will reload the entire list of articles
+//   //       initPage();
+//   //     }
+//   //   });
+//   // }
 
 //   function handleArticleScrape() {
 //     // This function handles the user clicking any "scrape new article" buttons
-//     $.get("/api/fetch").then(function(data) {
+//     $.get("/articles").then(function(data) {
+
+//       console.log(data)
 //       // If we are able to succesfully scrape the NYTIMES and compare the articles to those
 //       // already in our collection, re render the articles on the page
 //       // and let the user know how many unique articles we were able to save
 //       initPage();
-//       bootbox.alert("<h3 class='text-center m-top-80'>" + data.message + "<h3>");
+//       // bootbox.alert("<h3 class='text-center m-top-80'>" + data.message + "<h3>");
 //     });
 //   }
 // });

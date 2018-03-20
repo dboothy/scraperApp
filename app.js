@@ -55,7 +55,7 @@ app.get('/scrape', function(req, res) {
         .find("h3").text()
       result.summary = $(this)
         .find("p.media-deck").text()
-      result.url = "https://www.gamespot.com/" + $(this)
+      result.url = "https://www.gamespot.com" + $(this)
         .find("a").attr("href");
         // console.log(result.title+"\n","https://www.gamespot.com/"+result.link+"\n")
       // Create a new Article using the `result` object built from scraping
