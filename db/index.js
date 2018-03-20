@@ -1,7 +1,11 @@
 var mongoose = require('mongoose');
 
+var MONGDB_URI = "mongodb://heroku_5r1qb89n:k8oqahesigrfq7c4gagnhgg874@ds117489.mlab.com:17489/heroku_5r1qb89n"
+
+var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/scraperdb'
+
 mongoose.Promise = Promise;
-mongoose.connect('mongodb://localhost/scraperdb')
+mongoose.connect(MONGODB_URI)
 
 var db = mongoose.connection
 
