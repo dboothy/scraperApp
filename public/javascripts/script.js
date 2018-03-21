@@ -1,4 +1,5 @@
  $(document).on("click", ".scrape-new",function(){
+    
 
     $.getJSON("/articles", function(data) {
 

@@ -35,6 +35,15 @@ app.use("/", index);
 
 app.get("/", function(req, res) {
 
+  Article.find({}, null, {sort: {created: -1}}, function(err, data) {
+    if(data.length === 0) {
+      res.render("placeholder", {message: "There's nothing scraped yet. Please click \"Scrape For Newest Articles"});
+    }
+    else{
+      res.render("index", {articles: data});
+    }
+  });
+
  res.send("index");
 
 });
@@ -82,6 +91,8 @@ app.get('/scrape', function(req, res) {
         //   res.send("There was an error")
         // });
     });
+    console.log("scrape finished")
+    // res.redirect('/')
   });
 });
 
