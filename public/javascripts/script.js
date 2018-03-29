@@ -1,21 +1,33 @@
  $(document).on("click", ".scrape-new",function(){
-    
 
-    $.getJSON("/articles", function(data) {
+    $.ajax("/scrape")
+      .then(function (result){
+        getArticles()
+      })
+
+     });
+
+
+function getArticles(){
+
+      $.getJSON("/articles", function(data) {
 
       // $(".article-container").empty()
 
       for (var i = 0; i < data.length; i++) {
         
         var articleTitle = $("<h2>");
-        articleTitle.text(data[i].headline)
+        articleTitle.text(data[i].headline);
         var articleLink = $("<a href= >");
         articleLink.addClass("aLink");
         articleLink.text(data[i].url)
         var articleSummary = $("<p>");
         articleSummary.addClass("aBody");
-        articleSummary.text(data[i].summary)
-        $("#aBody").append(articleTitle, "<p data-id='" + data[i]._id + "'>",articleSummary, articleLink)
+        articleSummary.text(data[i].summary);
+        var articleImg = $("<img>");
+        articleImg.attr("src", data[i].img);
+        // var deleteButton = 
+        $("#aBody").append(articleTitle, "<p data-id='" + data[i]._id + "'>",articleSummary, articleLink, articleImg)
 
         
         // $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].headline + "<br/>" + data[i].summary + "<br/>" + data[i].url + "</p>");
@@ -23,10 +35,7 @@
     });
 
 
- });
-
-
-
+}
 
 
 

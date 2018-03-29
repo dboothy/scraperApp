@@ -7,10 +7,13 @@ var ArticleSchema = new Schema({
 	headline: {type: String, required: true},
 	summary: {type: String, required: true},
 	url: {type: String, required: true},
+	img: {type: String, default: "/images/unavailable.jpg"},
+
+
 	// saved: {type: Boolean, default: false},
-	comments: {
+	comment: {
 		type: Schema.Types.ObjectId,
-		ref: "Comment.js"
+		ref: "Comment"
 	}
 })
 

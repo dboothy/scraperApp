@@ -27,7 +27,7 @@ app.set('view engine', 'handlebars');
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -35,17 +35,9 @@ app.use("/", index);
 
 app.get("/", function(req, res) {
 
-  Article.find({}, null, {sort: {created: -1}}, function(err, data) {
-    if(data.length === 0) {
-      res.render("placeholder", {message: "There's nothing scraped yet. Please click \"Scrape For Newest Articles"});
-    }
-    else{
-      res.render("index", {articles: data});
-    }
+  Article.find({}, function(err, data) {
+    res.render("index", {articles: data});
   });
-
- res.send("index");
-
 });
 
 app.get('/scrape', function(req, res) {
@@ -64,8 +56,10 @@ app.get('/scrape', function(req, res) {
         .find("h3").text()
       result.summary = $(this)
         .find("p.media-deck").text()
-      result.url = "https://www.gamespot.com" + $(this)
+      result.url =  $(this)
         .find("a").attr("href");
+      result.img = $(this)
+        .find("div.media-img").find("img").attr("src");
         // console.log(result.title+"\n","https://www.gamespot.com/"+result.link+"\n")
       // Create a new Article using the `result` object built from scraping
       var entry = new db.Article(result);
@@ -92,7 +86,7 @@ app.get('/scrape', function(req, res) {
         // });
     });
     console.log("scrape finished")
-    // res.redirect('/')
+    res.json({success: true})
   });
 });
 
@@ -100,6 +94,7 @@ app.get("/articles", function(req, res) {
   // Grab every document in the Articles collection
   db.Article
     .find({})
+    .populate("comment")
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
       res.json(dbArticle);
@@ -109,6 +104,7 @@ app.get("/articles", function(req, res) {
       res.json(err);
     });
 });
+
 
 	
 // 	request("https://techcrunch.com/", function(error, response, html) {

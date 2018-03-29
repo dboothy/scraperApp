@@ -1,0 +1,41 @@
+Delete button for each article
+
+deletes from the database 
+
+and update (refresh)
+
+
+
+Notes
+
+things to save
+
+id and contnet
+
+
+FrontEnd
+
+task: button for a modal to popup
+
+task: make a modal 1)text input and a 2)button for submit
+
+event listener for saving comment, needs to have a post ajax call to a route for the comment content to /comment
+
+
+
+BackEnd
+
+task: route.post /comment
+
+route take content of the comment and make a new Comment and save it
+
+
+FrontEnd
+task: articles coming back, change the handlebars code to show the comment on the page
+
+if comment exists on article data append to the page
+
+
+
+
+
